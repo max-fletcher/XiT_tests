@@ -1,0 +1,365 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;200;300;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* COMMON */
+.my-7{
+   margin-top: 4rem !important;
+   margin-bottom: 4rem !important;
+}
+
+.mx-7{
+   margin-right: 5rem!important;
+   margin-left: 5rem!important;
+}
+
+.mb-7{
+   margin-bottom: 4rem !important;
+}
+
+.mt-7{
+   margin-top: 4rem !important;
+}
+
+.rounded-main-btn{
+   border-radius: 0.2rem;
+   font-size: 1rem;
+   padding-top: 0.7em;
+   padding-bottom: 0.7em;
+}
+/* END COMMON */
+
+/* NAV AND TOP BACKGROUND IMAGE */
+
+.navbar {
+   position: absolute;
+   top: 0px;
+   width: 100%;
+}
+
+.hero-container{
+   /* margin-top: 150px; */
+   margin-top: 10rem;
+}
+
+@media only screen and (max-width: 991px) {
+   .navbar-collapse{
+      margin-top: 15px;
+      background: #fff !important;
+   }
+
+   .nav-link{
+      color:#3a3e64 !important;
+      padding-left: 10px !important;
+   }
+
+   .nav-link.active{
+      color:#755d6e !important;
+      padding-left: 10px !important;
+   }
+}
+
+.background-top-img{
+   width: 100vw;
+   min-height: 500px;
+   object-fit: cover;
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: -1;
+}
+
+.logo-img{
+   width: 100px;
+}
+
+.nav-item{
+   font-family: 'Libre Franklin', sans-serif;
+   font-size: 0.8rem;
+}
+
+.nav-container{
+   border-bottom: 1px solid white;
+}
+
+@media only screen and (max-width: 575px) {
+   .navbar-main{
+      padding-left: 10px;
+      padding-right: 10px;
+   }
+}
+
+@media only screen and (min-width: 992px) {
+   .nav-container{
+      margin: 0px 100px;
+   }
+}
+
+.subheader-main{
+   font-family: 'Libre Franklin', sans-serif;
+   font-size: 1.1rem;
+   font-weight: 200;
+}
+
+/* END NAV AND TOP BACKGROUND IMAGE */
+
+/* SECTION 1 */
+
+.section-1-card-title{
+   font-family: 'Libre Franklin', sans-serif;
+   color: #52575c;
+}
+
+@media only screen and (max-width: 383px) {
+   .section-1{
+      margin-top: 65px;
+   }
+}
+
+@media only screen and (min-width: 384px) and (max-width: 767px) {
+   .section-1{
+      margin-top: 100px;
+   }
+}
+
+@media only screen and (min-width: 566px) and (max-width: 575px) {
+   .section-1{
+      margin-top: 120px;
+   }
+}
+
+@media only screen and (min-width: 768px) {
+   .section-1{
+      margin-top: 150px;
+   }
+}
+
+.section1-card{
+   border: 0px;
+}
+
+.section-1-img-container{
+   margin-top: 30px;
+   margin-bottom: 30px;
+}
+
+.section-1-card-img{
+   width: 70px;
+   height: 70px;
+}
+
+/* END SECTION 1 */
+
+/* SECTION 2 */
+
+.section-2{
+   width: 100%;
+   max-width: 100%;
+}
+
+.section-2-img{
+   border-radius: 0px;
+}
+
+/* END SECTION 2 */
+
+/* SECTION 3 */
+
+.section-3-card-title{
+   font-family: 'Libre Franklin', sans-serif;
+   font-size: 1.25rem;
+   color: #52575c;
+}
+
+.section-3-card-subtitle{
+   font-family: 'Libre Franklin', sans-serif;
+   font-size: 0.75rem;
+   color: #e84545;
+}
+
+.section-3-card-text{
+   font-family: 'Libre Franklin', sans-serif;
+   font-size: 0.8rem;
+   color: #767b82;
+   font-weight: 400;
+}
+
+.social-link-btn{
+   font-size: 1rem;
+   color: #a0a9ad;
+}
+
+/* END SECTION 3 */
+
+/* SECTION 4 */
+
+.section-4-img-container{
+   height: inherit;
+   overflow-x: hidden;
+}
+
+.section-4-img{
+   height: 100%;
+   object-fit: cover;
+   object-position: center;
+   object-position: 75% 50%
+}
+
+.wrapper{
+   width: 100%;
+}
+.carousel{
+   max-width: 1200px;
+   height: auto;
+   margin: auto;
+   padding: 0 30px;
+   background: #53354a;
+   height: 100%;
+   min-height: 300px;
+}
+
+.carousel .card{
+   color: #fff;
+   background: #53354a;
+   text-align: center;
+   margin: 20px 0;
+   font-size: 90px;
+   font-weight: 600;
+   border: none;
+   border-radius: 0px !important;
+}
+
+.carousel .card .carousel-main-text{
+   font-family: 'Cardo', serif;
+   font-style: italic;
+   text-align: left;
+   font-size: 1.5rem;
+   font-weight: 300;
+   border-radius: 0px;
+   margin-top: 30px;
+   margin-right: 170px;
+   line-height: 1.5;
+}
+
+@media only screen and (max-width: 870px) {
+   .carousel .card .carousel-main-text{
+      margin-right: 30px;
+   }
+}
+
+.carousel .card .carousel-sub-text{
+   font-family: 'Libre Franklin', sans-serif;
+   text-align: left;
+   font-size: 10px;
+   font-weight: 300;
+   border-radius: 0px;
+   margin-top: 20px;
+}
+
+.owl-dots{
+   text-align: center;
+   margin-top: 10px;
+   margin-bottom: 30px;
+}
+
+@media only screen and (min-width: 379px) and (max-width: 455px) {
+   .carousel{
+      margin-bottom: 30px;
+   }
+}
+
+.owl-dot{
+   height: 10px;
+   width: 10px;
+   margin: 0 5px;
+   outline: none;
+   border-radius: 14px;
+   background: #755d6e!important;
+   border: 2px solid #755d6e!important;
+   box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+   transition: all 0.3s ease;
+}
+
+.owl-dot.active,
+.owl-dot:hover{
+   background: #fff!important;
+   border: 2px solid #fff!important;
+}
+/* END SECTION 4 */
+
+/* SECTION 5 */
+.section-5-main-text{
+   font-family: 'Libre Franklin', sans-serif;
+   font-size: 1.25rem;
+   font-weight: 300;
+   color: #52575c;
+}
+.section-5-sub-text{
+   font-family: 'Libre Franklin', sans-serif;
+   font-size: 1.25rem;
+   color: #52575c;
+   font-size: 0.6rem;
+   font-weight: 700;
+}
+/* END SECTION 5 */
+
+/* FOOTER */
+.footer-top{
+   color: #fff;
+   background: #3a3e64;
+   min-height: 200px;
+}
+
+@media only screen and (max-width: 767px) {
+   .col-container-top{
+      margin-top: 1.5rem !important;
+   }
+   .col-container-middle{
+      margin-top: 1rem !important;
+      margin-bottom: 1rem !important;
+   }
+   .col-container-bottom{
+      margin-bottom: 1.5rem !important;
+   }
+}
+
+.footer-top-main-text{
+   font-family: 'Libre Franklin', sans-serif;
+   font-size: 0.9rem;
+   font-weight: 400;
+}
+
+.footer-top-sub-text{
+   color: #898ba2;
+   font-family: 'Libre Franklin', sans-serif;
+   font-size: 0.8rem;
+   font-weight: 300;
+   margin-bottom: 0.7rem;
+}
+
+.footer-top-social-icons{
+   margin-top: 1rem;
+}
+
+.footer-btn{
+   font-size: 1rem;
+   border-radius: 3px;
+   border: 2px solid #fff;
+   color: #fff;
+}
+
+.footer-bottom{
+   color: #fff;
+   background: #313454;
+}
+
+.footer-bottom-text{
+   margin-top: 10px;
+   font-size: 0.8rem;
+   color: #808080;
+}
+
+.made-by{
+   color: #fff;
+}
+/* END FOOTER */
+
