@@ -159,7 +159,7 @@ $nodeValues = $crawler->filter('li.mega-dropdown__item')->each(function(Crawler 
             });
 });
 
-print_r($array);
+// print_r($array);
 
 $file = fopen('products.csv', 'w');
 foreach($array as $item){
