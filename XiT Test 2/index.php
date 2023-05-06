@@ -42,64 +42,117 @@ use Symfony\Component\DomCrawler\Crawler;
 
 
 // REAL WORK
+set_time_limit(0);
+ini_set('max_execution_time', 0);
+
 $url = 'https://yourpetpa.com.au';
+$array = [];
+$index = 1;
 
-$categories = ['dog', 'cat', 'shop-other', 'prescription-medication-script-required'];
+$client = new \GuzzleHttp\Client();
+try {
+   $response = $client->request('GET', $url);
+} catch (\Exception $e) {
+   echo $e->getMessage();
+}
 
-$products_pages_url = 'https://yourpetpa.com.au/collections/prescription-medication-script-required';
-$paginated_products_pages_url = '';
-// $i = 1;
+$html = $response->getBody();
+// echo $html;
 
-for($i = 1; $i <= 2; $i++){
+$crawler = new Crawler($html);
 
-   $paginated_products_pages_url = $products_pages_url . '?page=' . $i;
+$nodeValues = $crawler->filter('li.mega-dropdown__item')->each(function(Crawler $node, $i)use(&$url, &$client, &$index, &$array){
 
-   $client = new \GuzzleHttp\Client();
-   try {
-      $response = $client->request('GET', $paginated_products_pages_url);
-   } catch (\Exception $e) {
-      echo $e->getMessage();
-   }
+      $category = '';
 
-   $html = $response->getBody();
-   // echo $html;
+      $node->filter('a.site-nav__dropdown-heading')
+            ->each(function(Crawler $node, $i)use(&$url, &$category, &$client, &$index, &$array){
+                  $category = $node->text();
+                  $link = $node->attr('href');
 
-   $crawler = new Crawler($html);
+                  if(!str_contains($link, $url)){
+                     $link = $url . $link;
+                  }
 
-   $nodeValues = $crawler->filter('.product-block__title > a')->each(function(Crawler $node, $i)use($url, $client){
-      // SEARCH FOR THE VALUES THAT I WANT
-      // echo $node->text();
-      // echo $node->attr('href');
-      // echo '<br>';
+                  // echo $category;
+                  // echo '<br> 1stloop <br>';
+                  // echo $link;
+                  // echo '<br><br>';
 
-      $node_link = $node->attr('href');
-      $single_product_url = $url . $node_link;
-      // echo $node_link;
-      // echo '<br>';
-      // echo $single_product_url;
-      // echo '<br>';
+                  try {
+                     $response = $client->request('GET', $link);
+                  } catch (\Exception $e) {
+                     echo $e->getMessage();
+                  }
 
-      try {
-         $response = $client->request('GET', $single_product_url);
-      } catch (\Exception $e) {
-         echo $e->getMessage();
-      }
+                  $category_html = $response->getBody();
 
-      $html = $response->getBody();
-      $crawler = new Crawler($html);
+                  $crawler = new Crawler($category_html);
+                  $nodeValues2 = $crawler->filter('a.product-block__image')
+                        ->each(function(Crawler $node, $i)use(&$url, &$category, &$client, &$index, &$array){
+                              $product_page_link = $node->attr('href');
 
-      $title = $crawler->filter('.product-detail__title')->text();
-      $price = $crawler->filter('.product-detail__price > span > .theme-money')->text();
+                              if(!str_contains($product_page_link, $url)){
+                                 $product_page_link = $url . $product_page_link;
+                              }
 
-      echo $title;
-      echo $price;
+                              echo $product_page_link;
+                              echo '<br>';
 
-   });
+                              try {
+                                 $response = $client->request('GET', $product_page_link);
+                              } catch (\Exception $e) {
+                                 echo $e->getMessage();
+                              }
 
-   echo $i;
-};
+                              $product_html = $response->getBody();
 
+                              // echo $product_html;
 
+                              $crawler = new Crawler($product_html);
 
+                              // print_r($crawler->filter('h3.product-detail__title')->first()->text());
 
+                              $product_title = $crawler->filter('h3.product-detail__title')->first()->text();
+                              $product_description = '';
+                              $product_price = $crawler->filter('span.product-price__reduced > span.theme-money')->text('no_value');
+                              if($product_price == 'novalue'){
+                                 $product_price = $crawler->filter('span.theme-money')->last()->text();
+                              }
+                              $image_url = $crawler->filter('img.rimage__image')->first()->attr('data-srcset');
+
+                              // echo $index;
+                              // echo $product_title;
+                              // // echo $product_description;
+                              // echo $category;
+                              echo $product_price;
+                              // echo $product_page_link;
+                              // echo $image_url;
+                              $index++;
+                              echo '<br><br>';
+
+                              array_push($array,
+                                 [
+                                    'ID' => $index,
+                                    'Title' => $product_title,
+                                    'Description' => $product_description,
+                                    'Category' => $category,
+                                    'Price' => $product_price,
+                                    'URL' => $product_page_link,
+                                    'ImageURL' => $image_url
+                                 ]
+                              );
+                        });
+            });
+});
+
+// print_r($array);
+
+$file = fopen('products.csv', '2');
+foreach($array as $item){
+   fputcsv($file, $item);
+}
+fclose($file);
+
+echo 'EXPORTED';
 
