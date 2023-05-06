@@ -79,76 +79,89 @@ $nodeValues = $crawler->filter('li.mega-dropdown__item')->each(function(Crawler 
                   // echo $link;
                   // echo '<br><br>';
 
-                  try {
-                     $response = $client->request('GET', $link);
-                  } catch (\Exception $e) {
-                     echo $e->getMessage();
+                  $page = 1;
+                  $max_page = 1;
+
+                  while($page <= $max_page){
+                     $link .= '?page=' . 1;
+
+                     try {
+                        $response = $client->request('GET', $link);
+                     } catch (\Exception $e) {
+                        echo $e->getMessage();
+                     }
+
+                     $page++;
+   
+                     $category_html = $response->getBody();
+   
+                     $crawler = new Crawler($category_html);
+                     $max_page = (int)$crawler->filter('span.page > a')->text('1');
+   
+                     $nodeValues2 = $crawler->filter('a.product-block__image')
+                           ->each(function(Crawler $node, $i)use(&$url, &$category, &$client, &$index, &$array){
+                                 $product_page_link = $node->attr('href');
+   
+                                 if(!str_contains($product_page_link, $url)){
+                                    $product_page_link = $url . $product_page_link;
+                                 }
+   
+                                 // echo $product_page_link;
+                                 // echo '<br>';
+   
+                                 try {
+                                    $response = $client->request('GET', $product_page_link);
+                                 } catch (\Exception $e) {
+                                    echo $e->getMessage();
+                                 }
+   
+                                 $product_html = $response->getBody();
+   
+                                 // echo $product_html;
+   
+                                 $crawler = new Crawler($product_html);
+   
+                                 // print_r($crawler->filter('h3.product-detail__title')->first()->text());
+   
+                                 $product_title = $crawler->filter('h3.product-detail__title')->first()->text();
+                                 $product_description = '';
+                                 $product_price = $crawler->filter('span.product-price__reduced > span.theme-money')->text('no_value');
+                                 if($product_price == 'no_value'){
+                                    $product_price = $crawler->filter('span.theme-money')->last()->text();
+                                 }
+                                 $image_url = $crawler->filter('img.rimage__image')->first()->attr('src');
+   
+                                 // echo $index;
+                                 // echo $product_title;
+                                 // // echo $product_description;
+                                 // echo $category;
+                                 // echo $product_price;
+                                 // echo $product_page_link;
+                                 // echo $image_url;
+                                 // echo '<br><br>';
+   
+                                 array_push($array,
+                                    [
+                                       'ID' => $index,
+                                       'Title' => $product_title,
+                                       'Description' => $product_description,
+                                       'Category' => $category,
+                                       'Price' => $product_price,
+                                       'URL' => $product_page_link,
+                                       'ImageURL' => $image_url
+                                    ]
+                                 );
+   
+                                 $index++;
+                           });
                   }
 
-                  $category_html = $response->getBody();
-
-                  $crawler = new Crawler($category_html);
-                  $nodeValues2 = $crawler->filter('a.product-block__image')
-                        ->each(function(Crawler $node, $i)use(&$url, &$category, &$client, &$index, &$array){
-                              $product_page_link = $node->attr('href');
-
-                              if(!str_contains($product_page_link, $url)){
-                                 $product_page_link = $url . $product_page_link;
-                              }
-
-                              echo $product_page_link;
-                              echo '<br>';
-
-                              try {
-                                 $response = $client->request('GET', $product_page_link);
-                              } catch (\Exception $e) {
-                                 echo $e->getMessage();
-                              }
-
-                              $product_html = $response->getBody();
-
-                              // echo $product_html;
-
-                              $crawler = new Crawler($product_html);
-
-                              // print_r($crawler->filter('h3.product-detail__title')->first()->text());
-
-                              $product_title = $crawler->filter('h3.product-detail__title')->first()->text();
-                              $product_description = '';
-                              $product_price = $crawler->filter('span.product-price__reduced > span.theme-money')->text('no_value');
-                              if($product_price == 'novalue'){
-                                 $product_price = $crawler->filter('span.theme-money')->last()->text();
-                              }
-                              $image_url = $crawler->filter('img.rimage__image')->first()->attr('data-srcset');
-
-                              // echo $index;
-                              // echo $product_title;
-                              // // echo $product_description;
-                              // echo $category;
-                              echo $product_price;
-                              // echo $product_page_link;
-                              // echo $image_url;
-                              $index++;
-                              echo '<br><br>';
-
-                              array_push($array,
-                                 [
-                                    'ID' => $index,
-                                    'Title' => $product_title,
-                                    'Description' => $product_description,
-                                    'Category' => $category,
-                                    'Price' => $product_price,
-                                    'URL' => $product_page_link,
-                                    'ImageURL' => $image_url
-                                 ]
-                              );
-                        });
             });
 });
 
-// print_r($array);
+print_r($array);
 
-$file = fopen('products.csv', '2');
+$file = fopen('products.csv', 'w');
 foreach($array as $item){
    fputcsv($file, $item);
 }
